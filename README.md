@@ -8,50 +8,105 @@
 ## Projects
 - [git-learning-log](https://github.com/Git-Guru-commit/git-learning-log) - My first Git project tracking a learning log
 
-## Command learned today
-git init
-git add learning-log.md
-git commit -m "Add initial learning log"
+# Command learned today
+## Git Commands Reference
 
-git add learning-log.md
-git commit -m "Add What I Learned section"
+### Basic Setup & Initialization
 
-git log
-git status
-git log --oneline
+```bash
+git init                                    # Initialize a new Git repository
+git remote add origin <url>                 # Connect to remote repository
+git branch -M main                          # Rename branch to main
+```
 
-git add learning-log.md
-git commit -m "Expand learning notes on branches"
+---
 
-git add learning-log.md
-git commit -m "Merge add-resources branch and resolve conflict"
+### Staging & Committing
 
-git log --oneline --graph
+```bash
+git add <file>                              # Stage file for commit
+git commit -m "<message>"                   # Create a commit with message
+```
 
-git remote add origin https://github.com/Git-Guru-commit/git-learning-log.git
-git branch -M main
-git push -u origin main
-git push origin add-resources
+---
 
-git reset --soft HEAD~1
-    - moves HEAD back by one commit. The soft flag means your file changes stay staged, ready to be re-committed or modified.
-    - HEAD 1 means "one commit before the current HEAD." The commit is gone from history, but your work is preserved.
+### Viewing History
 
-git checkout -- undo-practice.md
-    - replaces the file in your working directory with the version from the last commit. Any unsaved edits to that file are permanently discarded.
-    - The -- separates the command from the filename. Without it, Git might confuse a filename for a branch name.
+```bash
+git log                                     # View full commit history
+git log --oneline                           # View commits in compact format
+git log --oneline --graph                   # View commit tree with branches
+git reflog                                  # View all HEAD movements (including resets)
+```
 
-git revert HEAD
-    - creates a brand new commit that does the exact opposite of whatever HEAD (the most recent commit) did. If the last commit added a line, the revert commit removes it.
-    - The original bad commit stays in history (because it was already pushed), but the new revert commit cancels out its effect. This is the safe way to undo public work.
+---
 
-git reset --hard HEAD~1
-    - This is the most destructive form of reset. It moves HEAD back one commit, updates the staging area, AND overwrites your working directory. The Bisect section you just added is now gone from the file on disk.
+### Branches
 
-git reflog
-    - The commit is gone from git log, but it is not gone from Git. The reflog tracks every time HEAD moves, including resets. Your "lost" commit still exists in Git's object database.
+```bash
+git branch -M <new-name>                    # Rename current branch
+git branch <branch-name>                    # Create new branch
+git branch <branch-name> <commit-hash>      # Create branch from specific commit
+git merge <branch-name>                     # Merge branch into current branch
+```
 
-git branch recover-bisect-section f2c4cda
-    - This creates a new branch called recover-bisect-section that points directly at the commit you thought was lost. The commit's content (your Bisect section) is now reachable again through this branch.
+---
 
-git merge recover-bisect-section - Merge the recovery branch into main by running
+### Status & Inspection
+
+```bash
+git status                                  # Check status of working directory
+```
+
+---
+
+### Undoing Changes
+
+#### Safe Methods (Preserve History)
+
+| Command | Effect |
+|---------|--------|
+| `git revert HEAD` | Creates new commit that reverses the last commit. Safe for public work. |
+| `git reset --soft HEAD~1` | Moves HEAD back 1 commit. Changes stay staged and ready to commit. |
+
+#### Destructive Methods (Use With Caution)
+
+| Command | Effect |
+|---------|--------|
+| `git reset --hard HEAD~1` | Moves HEAD back 1 commit and discards all changes. Destructive. |
+| `git checkout -- <file>` | Replaces file with version from last commit. Unsaved edits lost permanently. |
+
+---
+
+### Recovery (After Destructive Operations)
+
+```bash
+git reflog                                  # Find lost commits
+git branch <recovery-branch> <commit-hash>  # Recover commit by creating branch
+git merge <recovery-branch>                 # Merge recovered content back
+```
+
+**Example:**
+```bash
+git reset --hard HEAD~1              # Lost changes
+git reflog                           # Find commit hash (e.g., f2c4cda)
+git branch recover-section f2c4cda   # Create recovery branch
+git merge recover-section            # Merge back to main
+```
+
+---
+
+### Remote Operations
+
+```bash
+git push -u origin main                     # Push main branch to remote (sets upstream)
+git push origin <branch-name>               # Push specific branch to remote
+```
+
+---
+
+### Quick Syntax Notes
+
+- `HEAD` = Current commit
+- `HEAD~1` = One commit before current
+- `--` = Separates command from filename (prevents Git from confusing filename with branch)
