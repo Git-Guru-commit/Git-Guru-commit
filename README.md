@@ -47,7 +47,9 @@ git reflog                                  # View all HEAD movements (including
 git branch -M <new-name>                    # Rename current branch
 git branch <branch-name>                    # Create new branch
 git branch <branch-name> <commit-hash>      # Create branch from specific commit
+git checkout -b <branch-name>               # Create and switch to new branch (shortcut)
 git merge <branch-name>                     # Merge branch into current branch
+git log --oneline <branch-name>             # View commit history of specific branch
 ```
 
 ---
@@ -56,6 +58,8 @@ git merge <branch-name>                     # Merge branch into current branch
 
 ```bash
 git status                                  # Check status of working directory
+git show HEAD:<file>                        # View file content from a specific commit
+git cherry-pick <commit-hash>               # Apply specific commit to current branch
 ```
 
 ---
@@ -95,6 +99,43 @@ git merge recover-section            # Merge back to main
 ```
 
 ---
+
+### Bisect (Find Bug-Introducing Commit)
+
+```bash
+git bisect start                            # Start bisect session
+git bisect bad                              # Mark current commit as bad (has bug)
+git bisect good <commit-hash>               # Mark a known good commit
+git bisect good                             # Continue marking commits as good/bad
+git bisect reset                            # Exit bisect session
+```
+
+**Workflow:**
+```bash
+git bisect start
+git bisect bad                   # Current commit has the bug
+git bisect good 2703ee8         # This old commit was good
+## Git checks out midpoint commit — test and mark as good or bad
+git bisect good                 # If this one is good
+## Continue until Git identifies the bad commit
+git bisect reset                # Back to original branch
+```
+
+---
+
+### Tags (Release Markers)
+
+```bash
+git tag -a <tag-name> -m "<message>"       # Create annotated tag with message
+git push origin <tag-name>                  # Push specific tag to remote
+git push origin --tags                      # Push all tags to remote
+```
+
+**Example:**
+```bash
+git tag -a v1.0 -m "First release: Git fundamentals complete"
+git push origin v1.0
+```
 
 ### Remote Operations
 
