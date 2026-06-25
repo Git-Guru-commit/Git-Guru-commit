@@ -34,7 +34,7 @@ git push -u origin main
 git push origin add-resources
 
 git reset --soft HEAD~1
-    - git reset --soft HEAD~1 moves HEAD back by one commit. The --soft flag means your file changes stay staged, ready to be re-committed or modified.
+    - moves HEAD back by one commit. The --soft flag means your file changes stay staged, ready to be re-committed or modified.
     - HEAD~1 means "one commit before the current HEAD." The commit is gone from history, but your work is preserved.
 
 git checkout -- undo-practice.md
