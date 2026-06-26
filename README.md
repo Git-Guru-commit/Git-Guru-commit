@@ -115,9 +115,9 @@ git bisect reset                            # Exit bisect session
 git bisect start
 git bisect bad                   # Current commit has the bug
 git bisect good 2703ee8         # This old commit was good
-## Git checks out midpoint commit — test and mark as good or bad
+# Git checks out midpoint commit — test and mark as good or bad
 git bisect good                 # If this one is good
-## Continue until Git identifies the bad commit
+# Continue until Git identifies the bad commit
 git bisect reset                # Back to original branch
 ```
 
@@ -142,6 +142,57 @@ git push origin v1.0
 ```bash
 git push -u origin main                     # Push main branch to remote (sets upstream)
 git push origin <branch-name>               # Push specific branch to remote
+git push origin <branch-name> --force-with-lease  # Force push safely (respects remote changes)
+git fetch origin                            # Fetch updates from remote without merging
+git reset --hard origin/main                # Reset local branch to remote version (destructive)
+```
+
+---
+
+### Rebase (Rewrite Commit History)
+
+```bash
+git rebase -i HEAD~<n>                      # Interactive rebase: edit last n commits
+```
+
+**Interactive Rebase Options:**
+- `pick` - Use commit
+- `reword` - Change commit message
+- `squash` - Combine with previous commit
+- `fixup` - Combine and discard message
+- `drop` - Remove commit
+
+**Example:**
+```bash
+git rebase -i HEAD~4                 # Open editor for last 4 commits
+# Edit, squash, reorder, or drop commits as needed
+```
+
+---
+
+### Stash (Temporary Storage)
+
+```bash
+git stash                                   # Save changes temporarily
+git stash list                              # View all stashed changes
+git stash pop                               # Apply and remove latest stash
+git stash apply                             # Apply stash without removing it
+git stash drop                              # Delete a stash
+```
+
+**Workflow:**
+```bash
+git stash                  # Save work in progress
+git fetch origin           # Pull latest changes
+git stash pop              # Apply saved work back
+```
+
+---
+
+### Configuration
+
+```bash
+git config --global core.editor "nano"      # Set default editor for Git (nano/vim/code)
 ```
 
 ---
